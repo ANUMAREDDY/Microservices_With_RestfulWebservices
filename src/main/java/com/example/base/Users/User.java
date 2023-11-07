@@ -13,7 +13,7 @@ import java.util.List;
 
 @Entity(name="user_details")
 public class User {
-    public User() {
+    protected User() {
     }
 
     @Id
@@ -55,6 +55,15 @@ public class User {
 
     public void setDOB(LocalDate DOB) {
         this.DOB = DOB;
+    }
+
+
+    public List<Post> getPosts() {
+        return posts;
+    }
+
+    public void setPosts(List<Post> posts) {
+        this.posts = posts;
     }
 
     @Override

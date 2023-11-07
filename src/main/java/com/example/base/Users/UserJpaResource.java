@@ -21,12 +21,9 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 @RestController
 public class UserJpaResource {
     @Autowired
-    private UserDaoService service;
-    @Autowired
     private UserRepository repository;
 
-    public UserJpaResource(UserDaoService service, UserRepository repository) {
-        this.service = service;
+    public UserJpaResource(UserRepository repository) {
         this.repository=repository;
     }
     @GetMapping(path="/jpa/users")
@@ -57,6 +54,17 @@ public class UserJpaResource {
     @DeleteMapping(path="/jpa/users/{id}")
     public void deleteUser(@PathVariable int id){
         repository.deleteById(id);
+
+    }
+    @GetMapping(path="/jpa/users/{id}/posts")
+    public List<Post> retrieveAllThePostsOfAUser(@PathVariable int id){
+        Optional<User> user=repository.findById(id);
+
+        if(user.isEmpty()){
+            throw new UserNotDefinedException("id:"+id);}
+
+        return user.get().getPosts();
+
 
     }
 }
